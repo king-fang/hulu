@@ -1,0 +1,58 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"hulujia/config"
+	"hulujia/form"
+	"hulujia/repository"
+	"hulujia/router"
+	"hulujia/util/log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
+)
+
+func main()  {
+
+	// 1. 初始化配置
+	config.SetupConfig()
+
+	// 2.初始化路由
+	routers := router.SetupRouter()
+
+	// 3.连接数据仓库
+	repository.SetupRepository()
+
+	// 4.初始化表单验证
+	form.SetUp()
+
+	// 5.开启服务
+	server := &http.Server{
+		Addr         : fmt.Sprintf(":%d",config.App.Port),
+		Handler      : routers,
+		ReadTimeout  : config.App.AppReadTimeout,
+		WriteTimeout : config.App.AppWriteTimeout,
+	}
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatal("Go hTTP server listen: %s\n", err)
+		}
+	}()
+	log.Info("Go http server Port:" + fmt.Sprintf("%d", config.App.Port) + "\tPid:" + fmt.Sprintf("%d", os.Getpid()))
+	log.Info("Go http server start successful")
+	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
+	signalChan := make(chan os.Signal)
+	signal.Notify(signalChan, os.Interrupt)
+	sig := <-signalChan
+	log.Info("Get Signal:", sig)
+	log.Info("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Info("Server exiting")
+}
