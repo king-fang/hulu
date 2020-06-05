@@ -17,7 +17,13 @@ type userRepository struct {
 // 获取用户信息
 func (d *userRepository) Get(field interface{}) *model.User {
 	user := &model.User{}
-	err := db.Where("id = ?", field).Or("name = ?", field).Or("phone = ?", field).Preload("Roles").First(user).Error;
+	err := db.
+		Where("id = ?", field).
+		Or("name = ?", field).
+		Or("phone = ?", field).
+		Preload("Roles").
+		Preload("Roles.Perms").
+		First(user).Error;
 	if err != nil {
 		return nil
 	}

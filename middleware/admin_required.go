@@ -12,7 +12,7 @@ func AdminRequired() gin.HandlerFunc {
 		if user == nil {
 			ctx.AbortWithStatusJSON(401, gin.H{
 				"code":   	401,
-				"message": "token已经失效",
+				"message": "管理员信息不存在",
 			})
 			return
 		}

@@ -67,10 +67,7 @@ func (s *roleService) Update(ctx *gin.Context, data form.RoleFormUpdate, id int)
 	}
 	// 更新角色
 	res := repository.RoleRepository.Update(updateMap,id)
-	if res {
-		// 更新成功之后更新角色权限
-		repository.RoleRepository.UpdateOrCreate(id,updateMap)
-	}
+	repository.RoleRepository.UpdatePerms(role,data.Perms)
 	return res, nil
 }
 

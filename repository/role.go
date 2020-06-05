@@ -71,18 +71,8 @@ func (d *roleRepository) Delete(id int) bool {
 }
 
 // 更改角色权限关系
-func (d *roleRepository) UpdateOrCreate(roleId int, data map[string]interface{}) bool  {
-	permsCount := db.Model(&model.RolePerms{}).Where("role_id = ?",roleId).Updates(model.RolePerms{
-		Perms:  data["perms"].(string),
-	}).RowsAffected
-	if permsCount == 0 {
-		err := db.Create(&model.RolePerms{
-			Perms:  data["perms"].(string),
-			RoleId: roleId,
-		}).Error
-		if err != nil{
-			return false
-		}
-	}
-	return true
+func (d *roleRepository) UpdatePerms( role *model.Roles, perm string) {
+	db.Model(model.RolePerms{}).Where("role_id = ?", role.Id).Update(map[string]string{
+		"perms": perm,
+	})
 }
