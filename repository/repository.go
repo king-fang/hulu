@@ -81,6 +81,7 @@ func Tx(txFunc func(tx *gorm.DB) error) (err error) {
 func migrateData()  {
 	CreateUser()
 	CreateRole()
+	CreateUserRoles()
 }
 
 // 外键设置

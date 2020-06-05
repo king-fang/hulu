@@ -35,3 +35,12 @@ func CreateRole()  {
 		})
 	}
 }
+
+// 管理员与角色关联
+func CreateUserRoles()  {
+	admin := UserRepository.Get(1)
+	count := DB().Model(&admin).Association("Roles").Count()
+	if count == 0 {
+		DB().Model(admin).Association("Roles").Append(model.UserRoles{RolesId:1,UserId:admin.ID})
+	}
+}
