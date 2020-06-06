@@ -16,6 +16,7 @@ func AdminRequired() gin.HandlerFunc {
 			})
 			return
 		}
+		// 处理权限
 		ctx.Next()
 	}
 }

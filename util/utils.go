@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/spf13/viper"
@@ -137,4 +138,17 @@ func IsEnglish(str string) bool {
 		return false
 	}
 	return true
+}
+
+// json
+func JsonEncode(v interface{}) string {
+	bytes, err := json.Marshal(v)
+	if err != nil {
+		return ""
+	}
+	return string(bytes)
+}
+
+func JsonDecode(data []byte, val interface{}) error {
+	return json.Unmarshal(data, val)
 }
