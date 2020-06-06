@@ -15,7 +15,7 @@ func SetupRouter() *gin.Engine {
 
 	route := gin.Default()
 
-	route.Use(middleware.Cors())
+	route.Use(middleware.Cors(),middleware.LoggerToFile())
 
 	// 欢迎页
 	route.GET("/", func(context *gin.Context) {

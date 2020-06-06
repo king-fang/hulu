@@ -28,6 +28,8 @@ require (
 	github.com/jinzhu/gorm v1.9.12
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
+	github.com/lestrrat-go/file-rotatelogs v2.3.0+incompatible
+	github.com/lestrrat-go/strftime v1.0.1 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/mitchellh/mapstructure v1.3.1 // indirect
 	github.com/onsi/ginkgo v1.12.2 // indirect
@@ -37,6 +39,7 @@ require (
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.6.0 // indirect
 	github.com/rs/zerolog v1.18.0
+	github.com/siddontang/go-mysql-elasticsearch v0.0.0-20191111024017-d4e881274861 // indirect
 	github.com/siddontang/goredis v0.0.0-20180423163523-0b4019cbd7b7 // indirect
 	github.com/siddontang/ledisdb v0.0.0-20190202134119-8ceb77e66a92 // indirect
 	github.com/spf13/afero v1.2.2 // indirect
