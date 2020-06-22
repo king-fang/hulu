@@ -1,4 +1,4 @@
-package repository
+package conn
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"hulujia/config"
-	"hulujia/model"
+	"hulujia/database"
 	"hulujia/util/log"
 	"time"
 )
@@ -15,7 +15,7 @@ var (
 	db *gorm.DB
 )
 
-func SetupRepository()  {
+func SetupMysql()  {
 	var err error
 	host := config.Database.Host
 	user := config.Database.User
@@ -38,11 +38,17 @@ func SetupRepository()  {
 	}
 
 	db.SingularTable(true) //禁用表名复数
-	if err = db.AutoMigrate(model.Models...).Error; nil != err {
-		log.Error("auto migrate tables failed")
+
+	// database
+	if err := database.Migrate(db); err != nil {
+		log.Error("auto database tables failed")
 	}
-	migrateData()
-	foreign()
+
+	// Seeder
+	database.Seeder(db)
+
+	// foreign
+	database.Roreign(db)
 }
 
 // Shutdown - close database connection
@@ -75,21 +81,4 @@ func Tx(txFunc func(tx *gorm.DB) error) (err error) {
 	}()
 	err = txFunc(tx)
 	return err
-}
-
-// 迁移
-func migrateData()  {
-	CreateUser()
-	CreateRole()
-	CreateUserRoles()
-}
-
-// 外键设置
-func foreign()  {
-	// 角色权限表
-	db.Model(&model.RolePerms{}).AddForeignKey("role_id", "roles(id)", "CASCADE", "CASCADE")
-
-	// 用户角色中间表（多对多）
-	db.Model(&model.UserRoles{}).AddForeignKey("user_id", "user(id)", "CASCADE", "CASCADE")
-	//db.Model(&model.UserRoles{}).AddForeignKey("roles_id", "roles(id)", "CASCADE", "CASCADE")
 }

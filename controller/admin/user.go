@@ -46,7 +46,21 @@ func (c *UserController) List(ctx *gin.Context)  {
 	c.Success(ctx, &sqlcnd.PageResult{Results: list, Page: paging})
 }
 
-// 创建管理员
+// @Summary 创建管理员
+// @Tags 后台
+// @Description ""
+// @Produce  json
+// @Accept  multipart/form-data
+// @consumes formData
+// @Param username formData string true "用户名"
+// @Param password formData string true "密码"
+// @Param phone formData string true "手机号"
+// @Param roles  body array  false "角色"
+// @Security Bearer
+// @Success 200 {object} response.ResponseMessage	"success"
+// @Failure 401 {object} response.ResponseMessage 	"Token解析失败"
+// @Failure 422 {object} response.ResponseMessage 	"请求参数缺失或者不正确返回"
+// @Router /api/admin/user [post]
 func (c *UserController) Create(ctx *gin.Context) {
 	var userForm form.UserForm
 	if err := ctx.ShouldBind(&userForm); err != nil {

@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"hulujia/config"
 	"hulujia/form"
 	"hulujia/model"
 	"hulujia/repository"
@@ -57,7 +58,7 @@ func (s *roleService) Update(ctx *gin.Context, data form.RoleFormUpdate, id int)
 		return false, errors.New(data.RoleName + "已经存在")
 	}
 	// 超级管理员的角色不能被修改
-	if role.RoleName == repository.RoleName  && data.RoleName != repository.RoleName {
+	if role.RoleName == config.RoleName && data.RoleName != config.RoleName {
 		return false, errors.New("超级管理员角色名称不能修改")
 	}
 	updateMap := map[string]interface{}{
@@ -77,7 +78,7 @@ func (s *roleService) Delete(id int) (bool bool, error error)  {
 	if role == nil {
 		return true, errors.New(response.GetMsg(response.ERROR_USER_NOT_FOUND,"角色"))
 	} else {
-		if role.RoleName == repository.RoleName {
+		if role.RoleName == config.RoleName {
 			return true, errors.New("超级管理员角色不能删除")
 		}
 	}

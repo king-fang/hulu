@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"hulujia/conn"
 	"hulujia/model"
 	"hulujia/util/sqlcnd"
 )
@@ -17,7 +18,7 @@ type userRepository struct {
 // 获取用户信息
 func (d *userRepository) Get(field interface{}) *model.User {
 	user := &model.User{}
-	err := db.
+	err := conn.DB().
 		Where("id = ?", field).
 		Or("name = ?", field).
 		Or("phone = ?", field).
@@ -32,8 +33,8 @@ func (d *userRepository) Get(field interface{}) *model.User {
 
 // 获取用户列表
 func (d *userRepository) List(cnd *sqlcnd.SqlCnd) (list []model.User, paging *sqlcnd.Paging) {
-	cnd.With("Roles").Find(db, &list)
-	count := cnd.Count(db, &model.User{})
+	cnd.With("Roles").Find(conn.DB(), &list)
+	count := cnd.Count(conn.DB(), &model.User{})
 	paging = &sqlcnd.Paging{
 		Page:  cnd.Paging.Page,
 		Limit: cnd.Paging.Limit,
@@ -49,7 +50,7 @@ func (d *userRepository) Create(data map[string]interface{}) *model.User {
 		Password:  data["password"].(string),
 		Phone:     data["phone"].(string),
 	}
-	if err := db.Create(&user).Error; err != nil {
+	if err := conn.DB().Create(&user).Error; err != nil {
 		return nil
 	}
 	return &user
@@ -57,7 +58,7 @@ func (d *userRepository) Create(data map[string]interface{}) *model.User {
 
 // 删除管理员
 func (d *userRepository) Delete(id int) bool {
-	if err := db.Unscoped().Delete(&model.User{}, "id = ?", id).Error; err != nil {
+	if err := conn.DB().Unscoped().Delete(&model.User{}, "id = ?", id).Error; err != nil {
 		return false
 	}
 	return true
@@ -65,7 +66,7 @@ func (d *userRepository) Delete(id int) bool {
 
 // 更新管理员
 func (d *userRepository) Update(data map[string]interface{}, id int) bool  {
-	if err := db.Model(&model.User{}).Where("id = ?",id).Updates(data).Error; err != nil {
+	if err := conn.DB().Model(&model.User{}).Where("id = ?",id).Updates(data).Error; err != nil {
 		return false
 	}
 	return true
@@ -74,7 +75,7 @@ func (d *userRepository) Update(data map[string]interface{}, id int) bool  {
 // 创建并更新管理员角色
 func (d *userRepository) UpdateOrCreateRole(roles []int, user *model.User) {
 	if len(roles) > 0 {
-		count := db.Model(user).Association("Roles").Count()
+		count := conn.DB().Model(user).Association("Roles").Count()
 		var userRole []*model.UserRoles
 		for _,r := range roles {
 			userRole = append(userRole,&model.UserRoles{
@@ -84,13 +85,13 @@ func (d *userRepository) UpdateOrCreateRole(roles []int, user *model.User) {
 		}
 		// 新增
 		if count == 0 {
-			db.Model(user).Association("Roles").Append(userRole)
+			conn.DB().Model(user).Association("Roles").Append(userRole)
 		} else {
 			// 修改
-			db.Model(user).Association("Roles").Replace().Append(userRole)
+			conn.DB().Model(user).Association("Roles").Replace().Append(userRole)
 		}
 	} else {
 		// 没有设置就删除
-		db.Model(user).Association("Roles").Replace()
+		conn.DB().Model(user).Association("Roles").Replace()
 	}
 }

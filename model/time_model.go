@@ -48,5 +48,5 @@ type TimeModel struct {
 }
 
 type DeletedTimeModel struct {
-	DeletedAt jsonTime `json:"deleted_at"`
+	DeletedAt jsonTime `gorm:"index" json:"deleted_at"`
 }

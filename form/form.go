@@ -3,7 +3,7 @@ package form
 import (
 	"fmt"
 	"github.com/astaxie/beego/validation"
-	"hulujia/repository"
+	"hulujia/conn"
 	"strings"
 )
 
@@ -47,7 +47,7 @@ func Unique(v *validation.Validation, obj interface{}, key string) {
 	table := strArrayNew[0]		// 表
 	field := strArrayNew[1]		// 字段
 	query := fmt.Sprintf("%s = ?", field)
-	rows, _ := repository.DB().Table(table).Where(query,obj).Rows()
+	rows, _ := conn.DB().Table(table).Where(query,obj).Rows()
 	if (rows.Next()) {
 		v.AddError(key, fmt.Sprintf("%s 已经存在",obj))
 	}

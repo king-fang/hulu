@@ -12,6 +12,10 @@ import (
 )
 
 var (
+	AdminName = "admin"
+	AdminPhone = "18507193432"
+	AdminPassword = "password"
+	RoleName = "super_admin"
 	// 配置文件
 	conf = "./app.yaml"
 	// 超时时间

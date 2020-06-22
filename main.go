@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"hulujia/config"
+	"hulujia/conn"
 	"hulujia/form"
-	"hulujia/repository"
 	"hulujia/router"
 	"hulujia/util/log"
 	"net/http"
@@ -14,6 +14,14 @@ import (
 	"time"
 )
 
+// @title 葫芦家
+// @version 2.0
+// @description 葫芦家商城v2
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @contact.name flaravel
+// @host localhost:8100
 func main()  {
 
 	// 1. 初始化配置
@@ -22,8 +30,8 @@ func main()  {
 	// 2.初始化路由
 	routers := router.SetupRouter()
 
-	// 3.连接数据仓库
-	repository.SetupRepository()
+	// 3.连接mysql数据库
+	conn.SetupMysql()
 
 	// 4.初始化表单验证
 	form.SetUp()

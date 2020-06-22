@@ -26,8 +26,8 @@ func JwtAuth(LoginType int) *jwt.GinJWTMiddleware {
 	jwtMiddleware := &jwt.GinJWTMiddleware{
 		Realm: "Jwt",
 		Key:           []byte(config.App.JwtSecret),			// jwt key
-		Timeout:       time.Hour * 24 * 15,
-		MaxRefresh:    time.Hour * 24 * 30,
+		Timeout:       time.Hour * 24 * 7,
+		MaxRefresh:    time.Hour * 24 * 15,
 		LoginResponse: LoginResponse,
 		RefreshResponse: LoginResponse,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
@@ -60,7 +60,7 @@ func JwtAuth(LoginType int) *jwt.GinJWTMiddleware {
 		Unauthorized: func(c *gin.Context, code int, message string) {
 			c.JSON(code, gin.H{
 				"code":    code,
-				"message": message,
+				"msg": message,
 			})
 		},
 		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
@@ -78,7 +78,7 @@ func LoginResponse(c *gin.Context, code int, token string, expire time.Time) {
 			"token":  token,
 			"expire": expire.Format("2006-01-02 15:04:05"),
 		},
-		"message": "success",
+		"msg": "success",
 	})
 }
 

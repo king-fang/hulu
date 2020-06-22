@@ -3,6 +3,9 @@ package router
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+	_ "hulujia/docs"
 	"hulujia/config"
 	"hulujia/controller/admin"
 	"hulujia/middleware"
@@ -16,6 +19,8 @@ func SetupRouter() *gin.Engine {
 	route := gin.Default()
 
 	route.Use(middleware.Cors(),middleware.LoggerToFile())
+
+	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// 欢迎页
 	route.GET("/", func(context *gin.Context) {
@@ -34,6 +39,7 @@ func SetupRouter() *gin.Engine {
 	jwtApi := api.Group("/")
 	jwtApi.Use(jwtAuth.MiddlewareFunc())
 	jwtApi.POST("/auth/login/refresh", jwtAuth.RefreshHandler)
+
 
 	//################################
 	//#                              #
@@ -62,6 +68,12 @@ func SetupRouter() *gin.Engine {
 		adminAPI.DELETE("/role/:id",RoleController.Destroy)
 		adminAPI.GET("/role/:id",RoleController.Show)
 
+		// Category Controller
+		ProductCategory := &admin.ProductCategory{}
+		adminAPI.GET("/category",ProductCategory.List)
+		adminAPI.POST("/category",ProductCategory.Create)
+		adminAPI.PUT("/category/:id",ProductCategory.Update)
+		adminAPI.DELETE("/category/:id",ProductCategory.Destroy)
 	}
 	return route
 }

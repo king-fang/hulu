@@ -24,7 +24,6 @@ func init() {
 	output.FormatLevel = func(i interface{}) string {
 		text := strings.ToUpper(fmt.Sprintf("%s", i))
 		return " | " + setColor(text,1,0, logColor(text))
-		//return strings.ToUpper(fmt.Sprintf(" | %s", i))
 	}
 	output.FormatMessage = func(i interface{}) string {
 		return fmt.Sprintf(" | %s", i)

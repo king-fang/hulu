@@ -4,6 +4,7 @@ import (
 	"errors"
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
+	"hulujia/config"
 	"hulujia/form"
 	"hulujia/model"
 	"hulujia/repository"
@@ -116,7 +117,7 @@ func (s *userService) Delete(id int) (bool bool, error error)  {
 	if user == nil {
 		return true, errors.New(response.GetMsg(response.ERROR_USER_NOT_FOUND,"管理员"))
 	} else {
-		if user.Name == repository.AdminName && user.Phone == repository.AdminPhone {
+		if user.Name == config.AdminName && user.Phone == config.AdminPhone {
 			return true, errors.New("超级管理员不能删除")
 		}
 	}
