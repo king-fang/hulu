@@ -14,5 +14,5 @@ type Roles struct {
 type RolePerms struct {
 	Id 		 int 		`gorm:"primary_key" json:"id"`
 	RoleId 	 int 		`gorm:"type:int(11);not null;comment:'角色Id';default:0" json:"role_id"`
-	Perms 	 string 	`gorm:"type:json;not null;comment:'角色权限';default:''" json:"perms"`
+	Perms 	 string 	`gorm:"type:json;not null;comment:'角色权限';" json:"perms"`
 }

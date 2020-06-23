@@ -47,16 +47,16 @@ func (p *ProductCategory) BeforeUpdate(scope *gorm.Scope) (err error) {
 		// 如果父级id 与更新的数据父级id相同则不进行处理
 		if (pCategory.ID > 0) {
 			// 子级根据父级等级 + 1
-			scope.SetColumn("CategoryLevel", pCategory.CategoryLevel + 1)
+			_ = scope.SetColumn("CategoryLevel", pCategory.CategoryLevel + 1)
 			if pCategory.CategoryPath == "" {
-				scope.SetColumn("CategoryPath", fmt.Sprintf("%s-%d-",pCategory.CategoryPath,pCategory.ID))
+				_ = scope.SetColumn("CategoryPath", fmt.Sprintf("%s-%d-",pCategory.CategoryPath,pCategory.ID))
 			} else {
-				scope.SetColumn("CategoryPath", fmt.Sprintf("%s%d-",pCategory.CategoryPath,pCategory.ID))
+				_ = scope.SetColumn("CategoryPath", fmt.Sprintf("%s%d-",pCategory.CategoryPath,pCategory.ID))
 			}
 			return
 		}
 	}
-	scope.SetColumn("CategoryLevel", 1)
-	scope.SetColumn("CategoryPath", "")
+	_ = scope.SetColumn("CategoryLevel", 1)
+	_ = scope.SetColumn("CategoryPath", "")
 	return
 }

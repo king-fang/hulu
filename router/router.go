@@ -3,11 +3,9 @@ package router
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
-	_ "hulujia/docs"
 	"hulujia/config"
 	"hulujia/controller/admin"
+	_ "hulujia/docs"
 	"hulujia/middleware"
 )
 
@@ -20,7 +18,7 @@ func SetupRouter() *gin.Engine {
 
 	route.Use(middleware.Cors(),middleware.LoggerToFile())
 
-	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	//route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// 欢迎页
 	route.GET("/", func(context *gin.Context) {
