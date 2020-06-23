@@ -77,10 +77,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect
 	rsc.io/sampler v1.99.99 // indirect
 )
-
-replace (
-	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
-	github.com/jinzhu/gorm v1.9.12 => /Users/flaravel/go/src/github.com/jinzhu/gorm
-	go.etcd.io/bbolt v1.3.4 => github.com/coreos/bbolt v1.3.4
-	golang.org/x/mod => /Users/flaravel/go/src/golang.org/x/mod
-)
