@@ -48,8 +48,16 @@ type database struct {
 	CharSet	string			// 字符集
 }
 
+// Mail 配置
+type mail struct {
+	SystemEmailUser string     	// 发件人邮箱
+	SystemEmailPass string		// 发件人密码
+	SystemEmailHost string		// 域名
+	SystemEmailPort int			// 端口
+}
 
 
+var Mail 	= &mail{}
 var App = &application{}
 var Database = &database{}
 
@@ -88,6 +96,11 @@ func SetupConfig()  {
 	Database.Min 		= viper.GetInt("database.mysql.pool.min")
 	Database.Ssl 		= viper.GetBool("database.mysql.ssl")
 
+	// 3.邮箱配置
+	Mail.SystemEmailHost = viper.GetString("database.smtp.addr")
+	Mail.SystemEmailPort = viper.GetInt("database.smtp.port")
+	Mail.SystemEmailUser = viper.GetString("database.smtp.username")
+	Mail.SystemEmailPass = viper.GetString("database.smtp.password")
 	log.Info("Load conf file %s successfully", conf)
 }
 

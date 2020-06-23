@@ -74,6 +74,7 @@ require (
 	google.golang.org/genproto v0.0.0-20200611194920-44ba362f84c1 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/dgrijalva/jwt-go.v3 v3.2.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/ini.v1 v1.57.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect
 	rsc.io/sampler v1.99.99 // indirect

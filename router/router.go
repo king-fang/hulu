@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"hulujia/config"
 	"hulujia/controller/admin"
-	_ "hulujia/docs"
 	"hulujia/middleware"
 )
 

@@ -36,3 +36,10 @@ cors:
     - '*'
   enable: false
   max_age: 7200
+
+smtp:
+  addr: smtp.163.com
+  port: 465
+  username: 请配置成你自己的
+  password: 请配置成你自己的
+  ssl: true
